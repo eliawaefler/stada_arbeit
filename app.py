@@ -47,7 +47,7 @@ except FileNotFoundError:
 
 # Zeitspalten vereinheitlichen
 mobility_df["DATUM"] = pd.to_datetime(mobility_df["DATUM"])
-wetter_df["dt_iso"] = pd.to_datetime(wetter_df["dt_iso"])
+wetter_df["dt_iso"] = pd.to_datetime(wetter_df["dt_iso"], errors="coerce")
 mobility_df["DATUM"] = mobility_df["DATUM"].dt.floor("H")
 wetter_df["dt_iso"] = wetter_df["dt_iso"].dt.floor("H")
 
@@ -86,6 +86,9 @@ if page == "Start":
 
     st.subheader("🌦 Wetterdaten Zürich (Auszug)")
     st.dataframe(wetter_df.head(100))
+    invalid_dates = wetter_df[wetter_df["dt_iso"].isna()]
+    st.write("Ungültige Zeitstempel in wetter_df:")
+    st.dataframe(invalid_dates)
 
     st.subheader("📍 Standorte der Zählstationen (Auszug)")
     st.dataframe(standorte_df.head(100))
