@@ -28,7 +28,7 @@ def show(df):
 
     st.subheader("📊 Modellgüte")
     st.write(f"R²: {r2_score(y_test, y_pred):.3f}")
-    st.write(f"RMSE: {mean_squared_error(y_test, y_pred, False):.2f}")  # <- FIXED HERE
+    st.write(f"RMSE: {mean_squared_error(y_test, y_pred):.2f}")  # <- FIXED HERE
 
     st.subheader("📉 Koeffizienten")
     st.dataframe(pd.DataFrame({"Merkmal": features, "Koeffizient": model.coef_}))
