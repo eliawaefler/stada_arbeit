@@ -40,6 +40,13 @@ def show(df):
         st.warning("Bitte mindestens eine Variable auswählen.")
         return
 
+
+
+    # Daten vorbereiten
+    df_ml = df[[target] + selected_features].dropna()
+    X = df_ml[selected_features]
+    y = df_ml[target]
+
     # -------------------
     st.subheader("🧮 Korrelation der unabhängigen Variablen")
 
@@ -49,17 +56,12 @@ def show(df):
         st.dataframe(corr.style.applymap(highlight_corr).format("{:.2f}"))
 
         st.write("""
-        **Hinweis:**  
-        Sehr hohe Korrelationen zwischen den unabhängigen Variablen (Multikollinearität)  
-        können das Modell instabil machen und Interpretationen verzerren.
-        """)
+         **Hinweis:**  
+         Sehr hohe Korrelationen zwischen den unabhängigen Variablen (Multikollinearität)  
+         können das Modell instabil machen und Interpretationen verzerren.
+         """)
     else:
         st.info("Mindestens 2 unabhängige Variablen auswählen, um Korrelationen zu sehen.")
-
-    # Daten vorbereiten
-    df_ml = df[[target] + selected_features].dropna()
-    X = df_ml[selected_features]
-    y = df_ml[target]
 
     # Train/Test-Split
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
