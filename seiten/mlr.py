@@ -23,6 +23,38 @@ def show(df):
         st.warning("Bitte mindestens eine Variable auswählen.")
         return
 
+        # -------------------
+        st.subheader("🧮 Korrelation der unabhängigen Variablen")
+
+        if len(selected_features) >= 2:
+            corr = X[selected_features].corr()
+
+            def highlight_corr(val):
+                if val >= 0.75:
+                    return "background-color: lightgreen"
+                elif val >= 0.5:
+                    return "background-color: turquoise"
+                elif val >= 0.25:
+                    return "background-color: lightblue"
+                elif val <= -0.75:
+                    return "background-color: red"
+                elif val <= -0.5:
+                    return "background-color: orange"
+                elif val <= -0.25:
+                    return "background-color: yellow"
+                else:
+                    return ""
+
+            st.dataframe(corr.style.applymap(highlight_corr).format("{:.2f}"))
+
+            st.write("""
+            **Hinweis:**  
+            Sehr hohe Korrelationen zwischen den unabhängigen Variablen (Multikollinearität)  
+            können das Modell instabil machen und Interpretationen verzerren.
+            """)
+        else:
+            st.info("Mindestens 2 unabhängige Variablen auswählen, um Korrelationen zu sehen.")
+
     # Daten vorbereiten
     df_ml = df[[target] + selected_features].dropna()
     X = df_ml[selected_features]
@@ -88,34 +120,3 @@ def show(df):
     ax2.set_title("Q-Q-Plot")
     st.pyplot(fig2)
 
- # -------------------
-    st.subheader("🧮 Korrelation der unabhängigen Variablen")
-
-    if len(selected_features) >= 2:
-        corr = X[selected_features].corr()
-
-        def highlight_corr(val):
-            if val >= 0.75:
-                return "background-color: lightgreen"
-            elif val >= 0.5:
-                return "background-color: turquoise"
-            elif val >= 0.25:
-                return "background-color: lightblue"
-            elif val <= -0.75:
-                return "background-color: red"
-            elif val <= -0.5:
-                return "background-color: orange"
-            elif val <= -0.25:
-                return "background-color: yellow"
-            else:
-                return ""
-
-        st.dataframe(corr.style.applymap(highlight_corr).format("{:.2f}"))
-
-        st.write("""
-        **Hinweis:**  
-        Sehr hohe Korrelationen zwischen den unabhängigen Variablen (Multikollinearität)  
-        können das Modell instabil machen und Interpretationen verzerren.
-        """)
-    else:
-        st.info("Mindestens 2 unabhängige Variablen auswählen, um Korrelationen zu sehen.")
