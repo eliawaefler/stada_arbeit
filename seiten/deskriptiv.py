@@ -35,9 +35,9 @@ def show(mobility_df, wetter_df, df):
     """)
 
     section = st.selectbox("Datensatz auswählen", [
+        "🔀 Kombination: Wetter & Bewegung",
         "🚲 Mobility-Daten",
-        "🌦 Wetterdaten",
-        "🔀 Kombination: Wetter & Bewegung"
+        "🌦 Wetterdaten"
     ])
 
     if section == "🚲 Mobility-Daten":
