@@ -84,7 +84,7 @@ def show(df):
     # -------------------
     st.subheader("📊 Modellgüte")
     st.write(f"**R²:** {r2_score(y_test, y_pred):.3f}")
-    st.write(f"**RMSE:** {mean_squared_error(y_test, y_pred):.2f}")
+    st.write(f"**RMSE:** {np.sqrt(mean_squared_error(y_test, y_pred)):.2f}")
 
     st.write("""
     **Interpretation:** 
