@@ -2,7 +2,6 @@
 import streamlit as st
 import pandas as pd
 
-
 def highlight_corr(val):
     try:
         if val >= 0.75:
@@ -35,23 +34,61 @@ def show(mobility_df, wetter_df, standorte_df, df):
     if section == "🚲 Mobility-Daten":
         st.subheader("Grundstatistik – Mobility")
         cols = ["VELO_IN", "VELO_OUT", "FUSS_IN", "FUSS_OUT"]
-        st.dataframe(mobility_df[cols].describe())
+
+        # Nur Zeilen, in denen mindestens eine Zielvariable gültig ist
+        mobility_valid = mobility_df.dropna(subset=cols, how="all")
+
+        st.write(f"Anzahl gültiger Zeitpunkte: {len(mobility_valid)} von {len(mobility_df)}")
+
+        st.dataframe(mobility_valid[cols].describe())
+
+        st.write("""
+        **Interpretation:**  
+        Nur Zeitpunkte, in denen mindestens eine Bewegung gemessen wurde, werden berücksichtigt.  
+        Die Tabelle zeigt Mittelwert, Standardabweichung, Minimum, Maximum usw.  
+        Diese helfen, das typische Bewegungsverhalten zu verstehen.
+        """)
 
         st.subheader("Fehlende Werte")
         st.dataframe(mobility_df[cols].isnull().sum().to_frame("Fehlend"))
 
+        st.write("""
+        **Interpretation:**  
+        Viele Zeilen enthalten nur **eine Bewegungsart** (z. B. nur VELO oder nur FUSS).  
+        Das ist normal, da jede Zählstelle auf einen Typ spezialisiert ist.  
+        Daher sieht man pro Spalte viele NaNs – aber die Analyse filtert diese jetzt korrekt.
+        """)
+
         st.subheader("Histogramm")
         selected = st.selectbox("Spalte wählen", cols)
-        st.bar_chart(mobility_df[selected].dropna().value_counts().sort_index())
+        st.bar_chart(mobility_valid[selected].dropna().value_counts().sort_index())
+
+        st.write("""
+        **Interpretation:**  
+        Verteilung der Bewegungen pro Stunde.  
+        Häufigkeiten bestimmter Werte (z. B. viele Zeitpunkte mit genau 5 Velos).
+        """)
 
         st.subheader("Korrelationen")
-        corr = mobility_df[cols].corr()
+        corr = mobility_valid[cols].corr()
         st.dataframe(corr.style.applymap(highlight_corr).format("{:.2f}"))
+
+        st.write("""
+        **Interpretation:**  
+        Zeigt, wie stark die Bewegungsarten miteinander korrelieren.  
+        Hohe Werte bedeuten, dass z. B. VELO_IN oft mit FUSS_IN zusammen auftritt.
+        """)
 
     elif section == "🌦 Wetterdaten":
         st.subheader("Grundstatistik – Wetter")
         numeric = wetter_df.select_dtypes(include="number").columns
         st.dataframe(wetter_df[numeric].describe())
+
+        st.write("""
+        **Interpretation:**  
+        Temperatur, Luftfeuchtigkeit, Wind etc. werden als Überblick dargestellt.  
+        Extremwerte oder Ausreißer (z. B. hoher Wind oder Druck) können sichtbar werden.
+        """)
 
         st.subheader("Fehlende Werte")
         st.dataframe(wetter_df[numeric].isnull().sum().to_frame("Fehlend"))
@@ -63,15 +100,26 @@ def show(mobility_df, wetter_df, standorte_df, df):
         st.subheader("Korrelationen")
         corr = wetter_df[numeric].corr()
         st.dataframe(corr.style.applymap(highlight_corr).format("{:.2f}"))
+
+        st.write("""
+        **Interpretation:**  
+        Zeigt Zusammenhänge zwischen Wettergrößen.  
+        z. B. hoher Taupunkt und hohe Temperatur korrelieren oft stark.
+        """)
+
     elif section == "📍 Standortdaten":
         st.subheader("Standortübersicht")
-        st.dataframe(standorte_df.head(100).style.applymap(highlight_corr).format("{:.2f}"))
+        st.dataframe(standorte_df.head(100))
         st.write("Anzahl Standorte:", len(standorte_df))
 
+        st.write("""
+        **Interpretation:**  
+        Zeigt die verfügbaren Messstationen und deren Positionen.  
+        Jede zählt entweder VELO oder FUSS, in IN oder OUT Richtung.
+        """)
+
         if "geometry" in standorte_df.columns:
-            st.map(standorte_df.rename(columns={"geometry": "location"}))  # wenn als POINT vorliegt
-
-
+            st.map(standorte_df.rename(columns={"geometry": "location"}))
 
     elif section == "🔀 Kombination: Wetter & Bewegung":
         st.subheader("Korrelation Wetter vs. Mobilität")
@@ -80,13 +128,26 @@ def show(mobility_df, wetter_df, standorte_df, df):
             "temp", "humidity", "wind_speed", "clouds_all",
             "dew_point", "feels_like", "pressure", "visibility"
         ]
-        kombi_df = df[mobility_cols + wetter_cols].dropna()
-        corr = kombi_df.corr()
-        st.write("🔢 Farblich formatierte Korrelationsmatrix")
 
+        kombi_df = df[mobility_cols + wetter_cols].dropna(how="any")
+        corr = kombi_df.corr()
+
+        st.write("🔢 Farblich formatierte Korrelationsmatrix")
         st.dataframe(corr.style.applymap(highlight_corr).format("{:.2f}"))
+
+        st.write("""
+        **Interpretation:**  
+        Erfasst Zusammenhänge zwischen Wetterbedingungen und Bewegungsverhalten.  
+        z. B. bei Hitze weniger Velofahrer? Bei Nebel weniger Fußgänger?
+        """)
+
         st.subheader("📈 Streudiagramm")
-        x = st.selectbox("X-Achse (z. B. Wetter)", wetter_cols)
-        y = st.selectbox("Y-Achse (z. B. Bewegung)", mobility_cols)
-        st.write(f"Scatterplot: {x} vs. {y}")
+        x = st.selectbox("X-Achse (Wetter)", wetter_cols)
+        y = st.selectbox("Y-Achse (Bewegung)", mobility_cols)
         st.scatter_chart(kombi_df[[x, y]])
+
+        st.write(f"""
+        **Interpretation:**  
+        Jeder Punkt zeigt eine Stunde.  
+        Du erkennst visuell, ob höhere {x}-Werte zu mehr oder weniger {y} führen.
+        """)
