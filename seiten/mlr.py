@@ -145,15 +145,15 @@ def show(df):
     ax2.set_title("Q-Q-Plot")
     st.pyplot(fig2)
     st.write("""
-    **interpretation**
-    Gerade Linie (45°) → Die Residuen sind normalverteilt.
-    S-förmig → Links- oder rechtsschiefe Verteilung:
-    Unten über der Linie, oben darunter → linksschief.
-    Unten unter der Linie, oben darüber → rechtsschief.
-    Starke Ausreißer → Punkte weit entfernt von der Linie (besonders an den Enden).
-    Gebogener Verlauf in der Mitte → falsche Kurtosis (z. B. zu flach oder spitz).
-    
-    in dieser Arbeit:
-    die meisten Mdelle werden leptokurtisch (Punkte in der Mitte liegen unter der Diagonalen, an den Enden über der Diagonalen.)
-    d.h. Zu viele Ausreisser, Daten haben dicke Tails.
-    → Modell ist sensibel für Extremwerte, und erklärt nicht alles. (Festtage usw. sind nicht abgebildet.""")
+    **interpretation**/n
+    /nGerade Linie (45°) → Die Residuen sind normalverteilt.
+    /nS-förmig → Links- oder rechtsschiefe Verteilung:
+    /nUnten über der Linie, oben darunter → linksschief.
+    /nUnten unter der Linie, oben darüber → rechtsschief.
+    /nStarke Ausreißer → Punkte weit entfernt von der Linie (besonders an den Enden).
+    /nGebogener Verlauf in der Mitte → falsche Kurtosis (z. B. zu flach oder spitz).
+    /n
+    /nin dieser Arbeit:
+    /ndie meisten Mdelle werden leptokurtisch (Punkte in der Mitte liegen unter der Diagonalen, an den Enden über der Diagonalen.)
+    /nd.h. Zu viele Ausreisser, Daten haben dicke Tails.
+    /n→ Modell ist sensibel für Extremwerte, und erklärt nicht alles. (Festtage usw. sind nicht abgebildet.""")
