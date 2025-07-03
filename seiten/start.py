@@ -8,7 +8,7 @@ def show(mobility_df, wetter_df, standorte_df):
     CAS "Statistische Datenanalyse und Datenvisualisierung" an der FFHS
     Elia Wäfler
     
-    ChatGPT wurde als Hiflsmittel eingesetzt
+    ChatGPT wurde als Hiflsmittel eingesetzt.
     """)
 
     st.subheader("🚲 Mobility-Daten (Auszug)")
