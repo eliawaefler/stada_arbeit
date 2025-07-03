@@ -20,17 +20,16 @@ def show(df):
     df["weekday"] = df["DATUM"].dt.weekday
     df["hour"] = df["DATUM"].dt.hour
 
+    add_time = st.checkbox("Wochentag und Uhrzeit als Features einbeziehen", value=True)
     # Wettermerkmale
     wetter_vars = ["temp", "humidity", "wind_speed", "clouds_all",
                    "dew_point", "feels_like", "pressure", "visibility"]
+    if add_time:
+        wetter_vars += ["weekday", "hour"]
 
     # Auswahl
-    selected_weather = st.multiselect("Wähle Wetter-Variablen aus", wetter_vars, default=wetter_vars)
-    add_time = st.checkbox("Wochentag und Uhrzeit als Features einbeziehen", value=True)
+    features = st.multiselect("Wähle Variablen aus", wetter_vars, default=wetter_vars)
 
-    features = selected_weather.copy()
-    if add_time:
-        features += ["weekday", "hour"]
 
     if len(features) < 1:
         st.warning("Bitte mindestens eine Variable auswählen.")
