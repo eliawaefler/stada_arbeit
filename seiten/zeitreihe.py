@@ -15,6 +15,29 @@ def show(mobility_df, df):
 
 
 
+    # Zeitintervall wählen
+    interval = st.selectbox("Intervall", ["H4", "D", "W"], index=0)
+    rule_map = {"H4": "4H", "D": "D", "W": "W"}
+    rule = rule_map[interval]
+
+    # Durchschnitt über alle Standorte pro Stunde berechnen
+    avg = mobility_df.copy()
+    avg["DATUM"] = pd.to_datetime(avg["DATUM"])
+    avg = avg.groupby("DATUM")[["VELO_IN", "VELO_OUT", "FUSS_IN", "FUSS_OUT"]].mean().reset_index()
+
+    # Merge mit Wetterdaten
+    df_plot = pd.merge(avg, df[["DATUM", compare_var]], on="DATUM", how="inner").dropna()
+    df_plot = df_plot.set_index("DATUM")
+
+    # OHLC-Resampling
+    resampled = df_plot.resample(rule).agg({
+        target_var: ["first", "max", "min", "last"],
+        compare_var: "mean"
+    })
+    resampled.columns = ["open", "high", "low", "close", "compare"]
+    resampled = resampled.dropna()
+
+
     # -------- Vergleichsplot (Ziel + Einflussvariable) ----------
     st.subheader(f"📉 Vergleich mit Wetterfaktor: {compare_var}")
     st.write("""
@@ -54,29 +77,6 @@ def show(mobility_df, df):
         Grundlage sind die **durchschnittlichen Bewegungswerte über alle Standorte je Stunde
         Leider haben die Daten eine extrem hohe Varianz was die Darstellung unschön macht**.
         """)
-
-
-    # Zeitintervall wählen
-    interval = st.selectbox("Intervall", ["H4", "D", "W"], index=0)
-    rule_map = {"H4": "4H", "D": "D", "W": "W"}
-    rule = rule_map[interval]
-
-    # Durchschnitt über alle Standorte pro Stunde berechnen
-    avg = mobility_df.copy()
-    avg["DATUM"] = pd.to_datetime(avg["DATUM"])
-    avg = avg.groupby("DATUM")[["VELO_IN", "VELO_OUT", "FUSS_IN", "FUSS_OUT"]].mean().reset_index()
-
-    # Merge mit Wetterdaten
-    df_plot = pd.merge(avg, df[["DATUM", compare_var]], on="DATUM", how="inner").dropna()
-    df_plot = df_plot.set_index("DATUM")
-
-    # OHLC-Resampling
-    resampled = df_plot.resample(rule).agg({
-        target_var: ["first", "max", "min", "last"],
-        compare_var: "mean"
-    })
-    resampled.columns = ["open", "high", "low", "close", "compare"]
-    resampled = resampled.dropna()
 
     # Bollinger-Bänder berechnen
     resampled["sma20"] = resampled["close"].rolling(20).mean()
