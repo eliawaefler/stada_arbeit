@@ -20,7 +20,7 @@ def load_all_data():
 
     if mobility_dfs:
         mobility_df = pd.concat(mobility_dfs, ignore_index=True)
-        mobility_df["DATUM"] = pd.to_datetime(mobility_df["DATUM"], errors="coerce").dt.floor("H")
+        mobility_df["DATUM"] = pd.to_datetime(mobility_df["DATUM"], errors="coerce").dt.floor("h")
         mobility_df = mobility_df.dropna(subset=["DATUM"])
     else:
         mobility_df = pd.DataFrame()
