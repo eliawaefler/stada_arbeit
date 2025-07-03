@@ -1,3 +1,4 @@
+
 # seiten/mlr.py
 import streamlit as st
 import pandas as pd
@@ -14,24 +15,36 @@ def show(df):
     # Zielvariable
     target = st.selectbox("Zielvariable wählen", ["VELO_IN", "VELO_OUT", "FUSS_IN", "FUSS_OUT"])
 
-    # Wettermerkmale (Checkbox-Auswahl)
-    all_features = ["temp", "humidity", "wind_speed", "clouds_all",
-                    "dew_point", "feels_like", "pressure", "visibility"]
-    selected_features = st.multiselect("Wähle die Wetter-Variablen aus", all_features, default=all_features)
+    # Zusatzfeatures erzeugen: Wochentag & Stunde
+    df = df.copy()
+    df["weekday"] = df["DATUM"].dt.weekday
+    df["hour"] = df["DATUM"].dt.hour
 
-    if len(selected_features) < 1:
+    # Wettermerkmale
+    wetter_vars = ["temp", "humidity", "wind_speed", "clouds_all",
+                   "dew_point", "feels_like", "pressure", "visibility"]
+
+    # Auswahl
+    selected_weather = st.multiselect("Wähle Wetter-Variablen aus", wetter_vars, default=wetter_vars)
+    add_time = st.checkbox("Wochentag und Uhrzeit als Features einbeziehen", value=True)
+
+    features = selected_weather.copy()
+    if add_time:
+        features += ["weekday", "hour"]
+
+    if len(features) < 1:
         st.warning("Bitte mindestens eine Variable auswählen.")
         return
 
     # Daten vorbereiten
-    df_ml = df[[target] + selected_features].dropna()
-    X = df_ml[selected_features]
+    df_ml = df[[target] + features].dropna()
+    X = df_ml[features]
     y = df_ml[target]
 
     # -------------------
     st.subheader("🧮 Korrelation der unabhängigen Variablen")
 
-    if len(selected_features) >= 2:
+    if len(features) >= 2:
         corr = X.corr()
 
         def highlight_corr(val):
@@ -58,7 +71,7 @@ def show(df):
         können das Modell instabil machen und Interpretationen verzerren.
         """)
     else:
-        st.info("Mindestens 2 unabhängige Variablen auswählen, um Korrelationen zu sehen.")
+        st.info("Mindestens 2 Variablen auswählen, um Korrelationen zu sehen.")
 
     # -------------------
     # Modelltraining
@@ -73,10 +86,18 @@ def show(df):
     st.write(f"**R²:** {r2_score(y_test, y_pred):.3f}")
     st.write(f"**RMSE:** {mean_squared_error(y_test, y_pred):.2f}")
 
+    st.write("""
+    **Interpretation:** 
+    eine Korrelation zwischen Wetter und Anzahl FunssgängerInnen und Fahrradfahrenden ist vorhanden,
+    ein Teil der Varianz kann durch das Wetter erklärt werden.
+    Sie hängt aber auch sehr starkt von anderen Faktoren wie Uhrzeit, Wochentag, Feiertage usw ab.
+    """)
+
+
     # -------------------
     st.subheader("📉 Koeffizienten")
     coeff_df = pd.DataFrame({
-        "Merkmal": selected_features,
+        "Merkmal": features,
         "Koeffizient": model.coef_
     })
     st.dataframe(coeff_df)
@@ -96,7 +117,6 @@ def show(df):
     # -------------------
     st.subheader("🔍 Residuenanalyse")
 
-    # Histogramm mit Glockenkurve
     fig, ax = plt.subplots()
     ax.hist(residuen, bins=30, alpha=0.6, density=True, label="Residuen")
     xmin, xmax = ax.get_xlim()
@@ -114,7 +134,7 @@ def show(df):
     ist die Normalverteilungsannahme für die Fehler erfüllt.
     """)
 
-    # Q-Q-Plot
+    # -------------------
     st.subheader("📐 Q-Q-Plot der Residuen")
     fig2, ax2 = plt.subplots()
     stats.probplot(residuen, dist="norm", plot=ax2)

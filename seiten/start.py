@@ -5,10 +5,10 @@ def show(mobility_df, wetter_df, standorte_df):
     st.title("Statistische Auswertung – Zürich Mobility & Wetter")
     st.write("""
     Diese Webseite zeigt statistische Methoden auf Grundlage von Mobilitäts- und Wetterdaten aus Zürich.
-    CAS "Statistische Datenanalyse und Datenvisualiseirung" an FFHS
+    CAS "Statistische Datenanalyse und Datenvisualisierung" an der FFHS
     Elia Wäfler
     
-    *ChatGPT wurde als Hiflsmittel eingesetzt
+    ChatGPT wurde als Hiflsmittel eingesetzt
     """)
 
     st.subheader("🚲 Mobility-Daten (Auszug)")
