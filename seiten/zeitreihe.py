@@ -12,16 +12,17 @@ def show(mobility_df, df):
     Eine Zeitreihe ist eine Folge von Messwerten, die in zeitlicher Reihenfolge erfasst wurden (z.B. stündliche Fuss- oder Veloverkehrsdaten).  
     Ziel ist es, Entwicklungen und Muster im Zeitverlauf zu erkennen.
     
-    **Typische Fragestellungen:**  
+    *Typische Fragestellungen:*
     - Gibt es Trends oder wiederkehrende Muster (z.B. Tages- oder Wochenschwankungen)?
     - Wie stark wirkt sich das Wetter auf die Mobilität aus?
     - Welche Extremwerte oder Ausreisser gibt es?
     
-    **Methoden in dieser Analyse:**  
+    *Methoden in dieser Analyse:*
     - Glättung mit gleitendem Durchschnitt (SMA)
     - Bollinger-Bänder zur Visualisierung von Volatilität
     - Vergleich mit Wettermerkmalen (z.B. Temperatur, Wind)
-    - Aggregation nach Stunden, Tagen oder Wochen""")
+    - Aggregation nach Stunden, Tagen oder Wochen
+    """)
 
     # Ziel- und Vergleichsvariablen wählen
     target_var = st.selectbox("Zielvariable (Kerzen & Linie)", ["VELO_IN", "VELO_OUT", "FUSS_IN", "FUSS_OUT"])
