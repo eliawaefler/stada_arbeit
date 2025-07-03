@@ -13,8 +13,8 @@ def show(mobility_agg, df):
     # Zeitintervall wählen
     interval = st.selectbox("Intervall", ["H", "4H", "D", "W"], index=0)
 
-    #BB
-    flatten = st.slider("flatten", 0, 1000, step=10, value=200)
+    # Flatten-Parameter (benutzerdefinierte Glättung)
+    flatten = st.slider("Glättung (Flatten)", 0, 100, step=10, value=50)
 
     # Kopie zur Verarbeitung
     df_plot = df[["DATUM", target_var, compare_var]].copy()
@@ -31,10 +31,15 @@ def show(mobility_agg, df):
     resampled.columns = ["open", "high", "low", "close", "compare"]
     resampled = resampled.dropna()
 
-    # Bollinger-Bänder berechnen
-    resampled["sma20"] = resampled["close"].rolling(20).mean()
-    resampled["upper"] = resampled["sma20"] + 2 * resampled["close"].rolling(20).std()
-    resampled["lower"] = resampled["sma20"] - 2 * resampled["close"].rolling(20).std()
+    # Bollinger-Bänder + SMA
+    if flatten > 0:
+        resampled["sma"] = resampled["close"].rolling(flatten).mean()
+        resampled["upper"] = resampled["sma"] + 2 * resampled["close"].rolling(flatten).std()
+        resampled["lower"] = resampled["sma"] - 2 * resampled["close"].rolling(flatten).std()
+    else:
+        resampled["sma"] = resampled["close"]
+        resampled["upper"] = resampled["close"]
+        resampled["lower"] = resampled["close"]
 
     st.subheader("📊 Candlestick Chart mit Bollinger Bändern")
 
@@ -48,10 +53,9 @@ def show(mobility_agg, df):
         close=resampled["close"],
         name=target_var
     ))
-
     fig.add_trace(go.Scatter(
-        x=resampled.index, y=resampled["sma20"],
-        mode="lines", line=dict(color="blue", width=1), name="SMA 20"
+        x=resampled.index, y=resampled["sma"],
+        mode="lines", line=dict(color="blue", width=1), name=f"SMA {flatten}"
     ))
 
     fig.add_trace(go.Scatter(
