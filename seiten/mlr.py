@@ -77,4 +77,46 @@ def show(df):
     st.subheader("📉 Koeffizienten")
     coeff_df = pd.DataFrame({
         "Merkmal": selected_features,
-        "Koeffizien
+        "Koeffizient": model.coef_
+    })
+    st.dataframe(coeff_df)
+
+    st.write("""
+    **Interpretation:**  
+    Ein positiver Koeffizient bedeutet: Wenn die Variable steigt, nimmt die Zielgröße im Modell zu.  
+    Ein negativer Koeffizient bedeutet: Wenn die Variable steigt, sinkt die Zielgröße.  
+    Die Höhe des Wertes zeigt die *Stärke* des Einflusses bei gleichbleibender Skala.
+    """)
+
+    # -------------------
+    st.subheader("📈 Vorhersage vs. Echtdaten")
+    scatter_df = pd.DataFrame({"Echt": y_test, "Vorhersage": y_pred})
+    st.scatter_chart(scatter_df)
+
+    # -------------------
+    st.subheader("🔍 Residuenanalyse")
+
+    # Histogramm mit Glockenkurve
+    fig, ax = plt.subplots()
+    ax.hist(residuen, bins=30, alpha=0.6, density=True, label="Residuen")
+    xmin, xmax = ax.get_xlim()
+    x = np.linspace(xmin, xmax, 100)
+    p = stats.norm.pdf(x, residuen.mean(), residuen.std())
+    ax.plot(x, p, "k", linewidth=2, label="Normalverteilung")
+    ax.set_title("Histogramm der Residuen")
+    ax.legend()
+    st.pyplot(fig)
+
+    st.write("""
+    **Was bedeutet das?**  
+    Die Residuen sollten *symmetrisch* um 0 verteilt sein.  
+    Wenn die Verteilung der Residuen der Glockenkurve ähnelt,  
+    ist die Normalverteilungsannahme für die Fehler erfüllt.
+    """)
+
+    # Q-Q-Plot
+    st.subheader("📐 Q-Q-Plot der Residuen")
+    fig2, ax2 = plt.subplots()
+    stats.probplot(residuen, dist="norm", plot=ax2)
+    ax2.set_title("Q-Q-Plot")
+    st.pyplot(fig2)
