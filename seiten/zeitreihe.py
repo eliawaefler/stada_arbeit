@@ -4,26 +4,29 @@ import pandas as pd
 import plotly.graph_objects as go
 
 def show(mobility_agg, df):
-    st.title("📈 Zeitreihenanalyse – TradingView Style")
+    st.title("📈 Zeitreihenanalyse – Trading-Style")
 
-    # Auswahl Bewegungsvariable & Einflussvariable
-    target_var = st.selectbox("Zielvariable (y-Achse)", ["VELO_IN", "VELO_OUT", "FUSS_IN", "FUSS_OUT"])
-    compare_var = st.selectbox("Einflussvariable zum Vergleich", ["temp", "humidity", "wind_speed", "clouds_all", "feels_like", "visibility"])
+    st.write("""
+    Diese Ansicht zeigt geglättete Kerzencharts mit Bollinger-Bändern.  
+    Basis: Durchschnitt aller Standorte pro Stunde → aggregiert zu H4, D, W.
+    """)
 
-    # Zeitintervall wählen
-    interval = st.selectbox("Intervall", ["H", "4H", "D", "W"], index=0)
+    # Ziel- und Vergleichsvariablen
+    target_var = st.selectbox("Zielvariable (Kerzen)", ["VELO_IN", "VELO_OUT", "FUSS_IN", "FUSS_OUT"])
+    compare_var = st.selectbox("Vergleichsvariable (Linie)", ["temp", "humidity", "wind_speed", "clouds_all", "feels_like", "visibility"])
 
-    # Flatten-Parameter (benutzerdefinierte Glättung)
-    flatten = st.slider("Glättung (Flatten)", 0, 100, step=10, value=50)
+    # Zeitintervall
+    interval = st.selectbox("Intervall", ["H4", "D", "W"], index=0)
+    rule_map = {"H4": "4H", "D": "D", "W": "W"}
+    rule = rule_map[interval]
 
-    # Kopie zur Verarbeitung
-    df_plot = df[["DATUM", target_var, compare_var]].copy()
-    df_plot = df_plot.dropna()
-    df_plot = df_plot.set_index("DATUM")
+    # Flattening durch vorheriges Mittel über alle Standorte ist in mobility_agg bereits enthalten
+    df_flat = df[["DATUM", target_var, compare_var]].copy()
+    df_flat = df_flat.dropna()
+    df_flat = df_flat.set_index("DATUM")
 
-    # Resampling
-    rule = {"H": "H", "4H": "4H", "D": "D", "W": "W"}[interval]
-    resampled = df_plot.resample(rule).agg({
+    # Aggregation auf Intervall-Ebene
+    resampled = df_flat.resample(rule).agg({
         target_var: ["first", "max", "min", "last"],
         compare_var: "mean"
     })
@@ -31,17 +34,12 @@ def show(mobility_agg, df):
     resampled.columns = ["open", "high", "low", "close", "compare"]
     resampled = resampled.dropna()
 
-    # Bollinger-Bänder + SMA
-    if flatten > 0:
-        resampled["sma"] = resampled["close"].rolling(flatten).mean()
-        resampled["upper"] = resampled["sma"] + 2 * resampled["close"].rolling(flatten).std()
-        resampled["lower"] = resampled["sma"] - 2 * resampled["close"].rolling(flatten).std()
-    else:
-        resampled["sma"] = resampled["close"]
-        resampled["upper"] = resampled["close"]
-        resampled["lower"] = resampled["close"]
+    # Bollinger-Bänder (SMA20)
+    resampled["sma20"] = resampled["close"].rolling(20).mean()
+    resampled["upper"] = resampled["sma20"] + 2 * resampled["close"].rolling(20).std()
+    resampled["lower"] = resampled["sma20"] - 2 * resampled["close"].rolling(20).std()
 
-    st.subheader("📊 Candlestick Chart mit Bollinger Bändern")
+    st.subheader("📊 Kerzenchart mit Bollinger-Bändern")
 
     fig = go.Figure()
 
@@ -53,9 +51,10 @@ def show(mobility_agg, df):
         close=resampled["close"],
         name=target_var
     ))
+
     fig.add_trace(go.Scatter(
-        x=resampled.index, y=resampled["sma"],
-        mode="lines", line=dict(color="blue", width=1), name=f"SMA {flatten}"
+        x=resampled.index, y=resampled["sma20"],
+        mode="lines", line=dict(color="blue", width=1), name="SMA 20"
     ))
 
     fig.add_trace(go.Scatter(
@@ -82,8 +81,10 @@ def show(mobility_agg, df):
     st.subheader(f"📉 Vergleich mit Einflussgröße: {compare_var}")
 
     fig2 = go.Figure()
-    fig2.add_trace(go.Scatter(x=resampled.index, y=resampled["compare"],
-                              name=compare_var, line=dict(color="orange")))
+    fig2.add_trace(go.Scatter(
+        x=resampled.index, y=resampled["compare"],
+        name=compare_var, line=dict(color="orange")
+    ))
 
     fig2.update_layout(
         height=300,
