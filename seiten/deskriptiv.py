@@ -87,7 +87,7 @@ def show(mobility_df, wetter_df, standorte_df, df):
         st.write("""
         **Interpretation:**  
         Temperatur, Luftfeuchtigkeit, Wind etc. werden als Überblick dargestellt.  
-        Extremwerte oder Ausreißer (z. B. hoher Wind oder Druck) können sichtbar werden.
+        Extremwerte oder Ausreisser (z. B. hoher Wind oder Druck) können sichtbar werden.
         """)
 
         st.subheader("Fehlende Werte")
@@ -103,7 +103,7 @@ def show(mobility_df, wetter_df, standorte_df, df):
 
         st.write("""
         **Interpretation:**  
-        Zeigt Zusammenhänge zwischen Wettergrößen.  
+        Zeigt Zusammenhänge zwischen Wettergrössen.  
         z. B. hoher Taupunkt und hohe Temperatur korrelieren oft stark.
         """)
 
@@ -138,7 +138,7 @@ def show(mobility_df, wetter_df, standorte_df, df):
         st.write("""
         **Interpretation:**  
         Erfasst Zusammenhänge zwischen Wetterbedingungen und Bewegungsverhalten.  
-        z. B. bei Hitze weniger Velofahrer? Bei Nebel weniger Fußgänger?
+        z. B. bei Hitze weniger Velofahrer? Bei Nebel weniger Fussgänger?
         """)
 
         st.subheader("📈 Streudiagramm")

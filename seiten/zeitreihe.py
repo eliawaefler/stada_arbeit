@@ -67,7 +67,7 @@ def show(mobility_df, df):
     st.subheader("📘 Interpretation")
     st.write(f"""
     - **Kerzenchart**: Gibt dir sofort ein Gefühl für die Dynamik von {target_var} im Tages- oder Wochenverlauf.  
-    - **Bollinger-Bänder**: Wenn {target_var} außerhalb der Bänder liegt, könnte es ein "besonderer" Zeitpunkt sein (z. B. Event, Wetterextrem).
+    - **Bollinger-Bänder**: Wenn {target_var} ausserhalb der Bänder liegt, könnte es ein "besonderer" Zeitpunkt sein (z. B. Event, Wetterextrem).
     - **Linienvergleich**: Wenn sich {target_var} und {compare_var} synchron verhalten, kann ein Wettereffekt angenommen werden.
     """)
 

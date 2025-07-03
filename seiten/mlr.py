@@ -103,8 +103,8 @@ def show(df):
 
     st.write("""
     **Interpretation:**  
-    Ein positiver Koeffizient bedeutet: Wenn die Variable steigt, nimmt die Zielgröße im Modell zu.  
-    Ein negativer Koeffizient bedeutet: Wenn die Variable steigt, sinkt die Zielgröße.  
+    Ein positiver Koeffizient bedeutet: Wenn die Variable steigt, nimmt die Zielgrösse im Modell zu.  
+    Ein negativer Koeffizient bedeutet: Wenn die Variable steigt, sinkt die Zielgrösse.  
     Die Höhe des Wertes zeigt die *Stärke* des Einflusses bei gleichbleibender Skala.
     """)
 
@@ -154,7 +154,7 @@ def show(df):
     
     Unten unter der Linie, oben darüber → rechtsschief.
     
-    Starke Ausreißer → Punkte weit entfernt von der Linie (besonders an den Enden).
+    Starke Ausreisser → Punkte weit entfernt von der Linie (besonders an den Enden).
     
     Gebogener Verlauf in der Mitte → falsche Kurtosis (z. B. zu flach oder spitz).
     
