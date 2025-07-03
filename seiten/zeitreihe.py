@@ -13,6 +13,9 @@ def show(mobility_agg, df):
     # Zeitintervall wählen
     interval = st.selectbox("Intervall", ["H", "4H", "D", "W"], index=0)
 
+    #BB
+    flatten = st.slider("flatten", 0, 1000, step=10, value=200)
+
     # Kopie zur Verarbeitung
     df_plot = df[["DATUM", target_var, compare_var]].copy()
     df_plot = df_plot.dropna()
