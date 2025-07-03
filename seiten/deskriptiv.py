@@ -21,7 +21,7 @@ def highlight_corr(val):
     except:
         return ""
 
-def show(mobility_df, wetter_df, standorte_df, df):
+def show(mobility_df, wetter_df, df):
     st.title("📊 Deskriptive Statistik")
 
     st.subheader("Theorie")
