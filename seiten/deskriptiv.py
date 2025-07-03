@@ -182,5 +182,5 @@ def show(mobility_df, wetter_df, df):
               **Interpretation:**  
               Die Punkte zeigen die Bewegungsaktivität ({y_var}) zu verschiedenen Zeitpunkten.  
               Die orange Linie zeigt den Verlauf der Wettervariable ({x_var}) mit eigener Skala rechts.  
-              So erkennst du z. B., ob mehr Bewegung bei gutem Wetter stattfindet.
+              So erkennst du z.B., ob mehr Bewegung bei gutem Wetter stattfindet.
               """)

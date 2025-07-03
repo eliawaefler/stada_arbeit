@@ -97,6 +97,6 @@ def show(df):
 
     st.write("""
     **Interpretation:**  
-    Ähnliche Stunden (z. B. "Rush Hour bei Regen", "Wochenende bei Sonne") werden durch das Clustering automatisch gruppiert.  
+    Ähnliche Stunden (z.B. "Rush Hour bei Regen", "Wochenende bei Sonne") werden durch das Clustering automatisch gruppiert.  
     Die PCA-Projektion erlaubt die visuelle Trennung der Cluster im 2D-Raum.
     """)

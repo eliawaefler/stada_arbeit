@@ -56,8 +56,8 @@ def show(mobility_df, df):
     # -------- Vergleichsplot (Ziel + Einflussvariable) ----------
     st.subheader(f"📉 Vergleich mit Wetterfaktor: {compare_var}")
     st.write("""
-    Hier siehst du die Zielvariable (z. B. Fussgänger:innen)  
-    zusammen mit einem Wetterfaktor (z. B. Temperatur) im selben Zeitformat.
+    Hier siehst du die Zielvariable (z.B. Fussgänger:innen)  
+    zusammen mit einem Wetterfaktor (z.B. Temperatur) im selben Zeitformat.
     """)
 
     fig2 = go.Figure()
@@ -82,7 +82,7 @@ def show(mobility_df, df):
     st.subheader("📘 Interpretation")
     st.write(f"""
     - **Kerzenchart**: Gibt dir sofort ein Gefühl für die Dynamik von {target_var} im Tages- oder Wochenverlauf.  
-    - **Bollinger-Bänder**: Wenn {target_var} ausserhalb der Bänder liegt, könnte es ein "besonderer" Zeitpunkt sein (z. B. Event, Wetterextrem).
+    - **Bollinger-Bänder**: Wenn {target_var} ausserhalb der Bänder liegt, könnte es ein "besonderer" Zeitpunkt sein (z.B. Event, Wetterextrem).
     - **Linienvergleich**: Wenn sich {target_var} und {compare_var} synchron verhalten, kann ein Wettereffekt angenommen werden.
     """)
 
@@ -101,6 +101,10 @@ def show(mobility_df, df):
     # -------- Candlestick Chart ----------
     st.subheader("📊 Kerzenchart mit Bollinger-Bändern")
     st.write("""
+        für die Daten in dieser Arbeit war die Auswertung und darstellung mit Kerzenchart und Bollinger Bändern 
+        nicht gut geeignet aber für sonstige Zeitreihen wie FX Charts können
+        diese sehr nützlich sein.
+        
         Jede Kerze zeigt 4/24/168 Stunden Bewegung:
         - Open: Beginnwert des Zeitraums  
         - High/Low: Max/Min im Zeitraum  

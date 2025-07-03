@@ -96,7 +96,7 @@ def show(df):
     **Interpretation:** 
     eine Korrelation zwischen Wetter und Anzahl FunssgängerInnen und Fahrradfahrenden ist vorhanden,
     ein Teil der Varianz kann durch das Wetter erklärt werden.
-    Sie hängt aber auch sehr starkt von anderen Faktoren wie Uhrzeit, Wochentag, Feiertage usw ab.
+    Sie hängt aber auch sehr stark von anderen Faktoren wie Uhrzeit, Wochentag, Feiertage usw ab.
     """)
 
 
@@ -141,7 +141,7 @@ def show(df):
     
     für die meisten Modelle in dieser Arbeit sind die Residuen:
     - ungefähr normalverteilt
-    - rechte Schiefe (langer rechter „Schwanz“) bedeutet grössere positive Fehler. 
+    - rechte Schiefe (langer rechter „Tail“) bedeutet grössere positive Fehler. 
         (z.B. Feste wie das Zürichfest oder Neujahr verziehen hier stark, weil dann deutlich mehr Menschen aktiv sind als sonst.)
     """)
 
@@ -154,21 +154,13 @@ def show(df):
     st.write("""
     **interpretation**
     Gerade Linie (45°) → Die Residuen sind normalverteilt.
-    
     S-förmig → Links- oder rechtsschiefe Verteilung:
-    
     Unten über der Linie, oben darunter → linksschief.
-    
     Unten unter der Linie, oben darüber → rechtsschief.
-    
     Starke Ausreisser → Punkte weit entfernt von der Linie (besonders an den Enden).
-    
-    Gebogener Verlauf in der Mitte → falsche Kurtosis (z. B. zu flach oder spitz).
+    Gebogener Verlauf in der Mitte → falsche Kurtosis (z.B. zu flach oder spitz).
     
     in dieser Arbeit:
-    
-    die meisten Mdelle werden leptokurtisch (Punkte in der Mitte liegen unter der Diagonalen, an den Enden über der Diagonalen.)
-    
+    die meisten Modelle werden leptokurtisch (Punkte in der Mitte liegen unter der Diagonalen, an den Enden über der Diagonalen.)
     d.h. Zu viele Ausreisser, Daten haben dicke Tails.
-    
     → Modell ist sensibel für Extremwerte, und erklärt nicht alles. (Festtage usw. sind nicht abgebildet.""")
