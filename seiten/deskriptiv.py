@@ -63,7 +63,7 @@ def show(mobility_df, wetter_df, df):
 
         st.write("""
         **Interpretation:**  
-        Viele Zeilen enthalten nur **eine Bewegungsart** (z. B. nur VELO oder nur FUSS).  
+        Viele Zeilen enthalten nur **eine Bewegungsart** (z.B. nur VELO oder nur FUSS).  
         Das ist normal, da jede Zählstelle auf einen Typ spezialisiert ist.  
         Daher sieht man pro Spalte viele NaNs – aber die Analyse filtert diese jetzt korrekt.
         """)
@@ -75,7 +75,7 @@ def show(mobility_df, wetter_df, df):
         st.write("""
         **Interpretation:**  
         Verteilung der Bewegungen pro Stunde.  
-        Häufigkeiten bestimmter Werte (z. B. viele Zeitpunkte mit genau 5 Velos).
+        Häufigkeiten bestimmter Werte (z.B. viele Zeitpunkte mit genau 5 Velos).
         """)
 
         st.subheader("Korrelationen")
@@ -85,7 +85,7 @@ def show(mobility_df, wetter_df, df):
         st.write("""
         **Interpretation:**  
         Zeigt, wie stark die Bewegungsarten miteinander korrelieren.  
-        Hohe Werte bedeuten, dass z. B. VELO_IN oft mit FUSS_IN zusammen auftritt.
+        Hohe Werte bedeuten, dass z.B. VELO_IN oft mit FUSS_IN zusammen auftritt.
         """)
 
     elif section == "🌦 Wetterdaten":
@@ -96,7 +96,7 @@ def show(mobility_df, wetter_df, df):
         st.write("""
         **Interpretation:**  
         Temperatur, Luftfeuchtigkeit, Wind etc. werden als Überblick dargestellt.  
-        Extremwerte oder Ausreisser (z. B. hoher Wind oder Druck) können sichtbar werden.
+        Extremwerte oder Ausreisser (z.B. hoher Wind oder Druck) können sichtbar werden.
         """)
 
         st.subheader("Fehlende Werte")
@@ -113,7 +113,7 @@ def show(mobility_df, wetter_df, df):
         st.write("""
         **Interpretation:**  
         Zeigt Zusammenhänge zwischen Wettergrössen.  
-        z. B. hoher Taupunkt und hohe Temperatur korrelieren oft stark.
+        z.B. hoher Taupunkt und hohe Temperatur korrelieren oft stark.
         """)
 
     elif section == "🔀 Kombination: Wetter & Bewegung":
@@ -133,7 +133,7 @@ def show(mobility_df, wetter_df, df):
         st.write("""
         **Interpretation:**  
         Erfasst Zusammenhänge zwischen Wetterbedingungen und Bewegungsverhalten.  
-        z. B. bei Hitze weniger Velofahrer? Bei Nebel weniger Fussgänger?
+        z.B. bei Hitze weniger Velofahrer? Bei Nebel weniger Fussgänger?
         """)
 
         import plotly.graph_objects as go
