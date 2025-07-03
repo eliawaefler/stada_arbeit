@@ -37,7 +37,6 @@ def show(mobility_df, wetter_df, standorte_df, df):
     section = st.selectbox("Datensatz auswählen", [
         "🚲 Mobility-Daten",
         "🌦 Wetterdaten",
-        "📍 Standortdaten",
         "🔀 Kombination: Wetter & Bewegung"
     ])
 
@@ -116,20 +115,6 @@ def show(mobility_df, wetter_df, standorte_df, df):
         Zeigt Zusammenhänge zwischen Wettergrössen.  
         z. B. hoher Taupunkt und hohe Temperatur korrelieren oft stark.
         """)
-
-    elif section == "📍 Standortdaten":
-        st.subheader("Standortübersicht")
-        st.dataframe(standorte_df.head(100))
-        st.write("Anzahl Standorte:", len(standorte_df))
-
-        st.write("""
-        **Interpretation:**  
-        Zeigt die verfügbaren Messstationen und deren Positionen.  
-        Jede zählt entweder VELO oder FUSS, in IN oder OUT Richtung.
-        """)
-
-        if "geometry" in standorte_df.columns:
-            st.map(standorte_df.rename(columns={"geometry": "location"}))
 
     elif section == "🔀 Kombination: Wetter & Bewegung":
         st.subheader("Korrelation Wetter vs. Mobilität")

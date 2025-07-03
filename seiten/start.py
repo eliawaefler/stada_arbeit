@@ -16,6 +16,3 @@ def show(mobility_df, wetter_df, standorte_df):
 
     st.subheader("🌦 Wetterdaten (Auszug)")
     st.dataframe(wetter_df.head(100))
-
-    st.subheader("📍 Standorte der Zählstationen (Auszug)")
-    st.dataframe(standorte_df.head(100))

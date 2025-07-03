@@ -21,9 +21,9 @@ page = st.sidebar.radio("Seite auswählen", [
 
 # Seiten-Dispatch
 if page == "Start":
-    start.show(mobility_df, wetter_df, standorte_df)
+    start.show(mobility_df, wetter_df)
 elif page == "Deskriptive Statistik":
-    deskriptiv.show(mobility_df, wetter_df, standorte_df, df)
+    deskriptiv.show(mobility_df, wetter_df, df)
 elif page == "Multiple Lineare Regression (MLR)":
     mlr.show(df)
 elif page == "PCA":
