@@ -151,13 +151,51 @@ def show(mobility_df, wetter_df, standorte_df, df):
         z. B. bei Hitze weniger Velofahrer? Bei Nebel weniger Fussgänger?
         """)
 
-        st.subheader("📈 Streudiagramm")
-        x = st.selectbox("X-Achse (Wetter)", wetter_cols)
-        y = st.selectbox("Y-Achse (Bewegung)", mobility_cols)
-        st.scatter_chart(kombi_df[[x, y]])
+        import plotly.graph_objects as go
+
+        st.subheader("📈 Vergleich: Wetterverlauf und Bewegungsaktivität")
+        x_var = st.selectbox("Wettervariable (als Linie)", wetter_cols, key="wetterlinie")
+        y_var = st.selectbox("Bewegungsvariable (als Punkte)", mobility_cols, key="bewegungspunkte")
+
+        df_plot = df[["DATUM", x_var, y_var]].dropna()
+
+        fig = go.Figure()
+
+        # Bewegungspunkte
+        fig.add_trace(go.Scatter(
+            x=df_plot["DATUM"],
+            y=df_plot[y_var],
+            mode="markers",
+            name=y_var,
+            marker=dict(color="blue", size=4),
+            yaxis="y1"
+        ))
+
+        # Wetterlinie (eigene Achse rechts)
+        fig.add_trace(go.Scatter(
+            x=df_plot["DATUM"],
+            y=df_plot[x_var],
+            mode="lines",
+            name=x_var,
+            line=dict(color="orange", width=2),
+            yaxis="y2"
+        ))
+
+        fig.update_layout(
+            title=f"{y_var} (Punkte) vs. {x_var} (Linie)",
+            xaxis=dict(title="Zeitpunkt"),
+            yaxis=dict(title=y_var, side="left"),
+            yaxis2=dict(title=x_var, overlaying="y", side="right", showgrid=False),
+            height=500,
+            legend=dict(x=0.01, y=0.99),
+            margin=dict(l=40, r=40, t=40, b=40)
+        )
+
+        st.plotly_chart(fig, use_container_width=True)
 
         st.write(f"""
-        **Interpretation:**  
-        Jeder Punkt zeigt eine Stunde.  
-        Du erkennst visuell, ob höhere {x}-Werte zu mehr oder weniger {y} führen.
-        """)
+              **Interpretation:**  
+              Die Punkte zeigen die Bewegungsaktivität ({y_var}) zu verschiedenen Zeitpunkten.  
+              Die orange Linie zeigt den Verlauf der Wettervariable ({x_var}) mit eigener Skala rechts.  
+              So erkennst du z. B., ob mehr Bewegung bei gutem Wetter stattfindet.
+              """)
