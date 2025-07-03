@@ -4,7 +4,8 @@ import streamlit as st
 def show(mobility_df, wetter_df):
     st.title("Statistische Auswertung – Zürich Mobility & Wetter")
 
-    st.subheader("https://stadaarbeit.streamlit.app/")
+    st.write("https://stadaarbeit.streamlit.app/")
+    st.write("https://github.com/eliawaefler/stada_arbeit")
 
     st.write("""
     Diese Webseite zeigt statistische Methoden auf Grundlage von Mobilitäts- und Wetterdaten aus Zürich.
