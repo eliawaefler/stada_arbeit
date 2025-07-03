@@ -10,6 +10,7 @@ from sklearn.cluster import KMeans
 def show(df):
     st.title("🧮 PCA – Hauptkomponentenanalyse")
 
+    st.subheader("Theorie")
     st.write("""
     Die Hauptkomponentenanalyse (PCA) reduziert viele Variablen auf wenige Komponenten,  
     die möglichst viel Varianz der ursprünglichen Daten erklären.  

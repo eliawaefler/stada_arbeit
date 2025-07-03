@@ -9,6 +9,23 @@ import matplotlib.pyplot as plt
 
 def show(df):
     st.title("🔀 Clustering – Vergleich von Methoden")
+    st.subheader("Theorie")
+    st.write("""
+    **Was ist Clustering?**  
+    Clustering ist ein Verfahren zur Gruppierung von Datenpunkten basierend auf Ähnlichkeit – ohne dass vorher Klassen vorgegeben werden.  
+    Ziel ist es, **Muster oder Strukturen** in den Daten zu erkennen.
+
+    **K-Means Clustering:**  
+    - Teilt die Daten in *K Gruppen* ein.
+    - Jeder Punkt wird dem nächstgelegenen Clusterzentrum zugeordnet.
+    - Die Zentren werden so angepasst, dass die Abstände innerhalb eines Clusters minimiert werden.
+
+    **Typische Anwendung hier:**  
+    - Gruppierung von Zeitpunkten mit ähnlichen Bewegungsmustern
+    - Erkennen von typischen Wetter-Mobilitäts-Kombinationen
+    - Visualisierung von ungekannten Strukturen im Datensatz
+    """)
+
 
     # Zeitliche Features
     df = df.copy()

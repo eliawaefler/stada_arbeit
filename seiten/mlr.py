@@ -12,6 +12,13 @@ import scipy.stats as stats
 def show(df):
     st.title("📈 Multiple Lineare Regression (MLR)")
 
+    st.subheader("Theorie")
+    st.write("""
+    Die multiple lineare Regression modelliert den Zusammenhang zwischen einer Zielgrösse (z.B. Fussgängerzahl) 
+    und mehreren Einflussvariablen (z.B. Temperatur, Luftfeuchtigkeit, Uhrzeit). Das Ziel ist eine Regressionsgleichung:
+    y = a + b₁·x₁ + b₂·x₂ + ... + bₙ·xₙ + Fehlerterm
+    Zusätzlich wird die Modellgüte u. a. durch R² und Residuenanalysen bewertet.""")
+
     # Zielvariable
     target = st.selectbox("Zielvariable wählen", ["VELO_IN", "VELO_OUT", "FUSS_IN", "FUSS_OUT"])
 

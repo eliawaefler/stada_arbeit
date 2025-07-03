@@ -24,6 +24,16 @@ def highlight_corr(val):
 def show(mobility_df, wetter_df, standorte_df, df):
     st.title("📊 Deskriptive Statistik")
 
+    st.subheader("Theorie")
+    st.write("""
+    Die deskriptive Statistik dient dazu, Daten durch Kennzahlen und Grafiken zu beschreiben. Typische Methoden sind:
+    Mittelwert, Median, Modus: Lage der Werte
+    Standardabweichung, Varianz: Streuung der Daten
+    Histogramme: Verteilung sichtbar machen
+    Korrelation: Zusammenhang zwischen zwei Variablen (z.B. Temperatur und Fussgängerzahl)
+
+    """)
+
     section = st.selectbox("Datensatz auswählen", [
         "🚲 Mobility-Daten",
         "🌦 Wetterdaten",
