@@ -5,6 +5,16 @@ import plotly.graph_objects as go
 
 def show(mobility_df, df):
 
+    st.title("📈 Zeitreihenanalyse")
+
+
+
+    # Ziel- und Vergleichsvariablen wählen
+    target_var = st.selectbox("Zielvariable (Kerzen & Linie)", ["VELO_IN", "VELO_OUT", "FUSS_IN", "FUSS_OUT"])
+    compare_var = st.selectbox("Vergleichsvariable (Wetter)", ["temp", "humidity", "wind_speed", "clouds_all", "feels_like", "visibility"])
+
+
+
     # -------- Vergleichsplot (Ziel + Einflussvariable) ----------
     st.subheader(f"📉 Vergleich mit Wetterfaktor: {compare_var}")
     st.write("""
@@ -38,17 +48,13 @@ def show(mobility_df, df):
     - **Linienvergleich**: Wenn sich {target_var} und {compare_var} synchron verhalten, kann ein Wettereffekt angenommen werden.
     """)
 
-    st.title("📈 Zeitreihenanalyse – Trading-View Stil")
-
+    st.subheader("Trading-View Stil")
     st.write("""
         Diese Ansicht zeigt geglättete Zeitreihen als Kerzencharts (OHLC) und Bollinger-Bänder.  
-        Grundlage sind die **durchschnittlichen Bewegungswerte über alle Standorte je Stunde**.
+        Grundlage sind die **durchschnittlichen Bewegungswerte über alle Standorte je Stunde
+        Leider haben die Daten eine extrem hohe Varianz was die Darstellung unschön macht**.
         """)
 
-    # Ziel- und Vergleichsvariablen wählen
-    target_var = st.selectbox("Zielvariable (Kerzen & Linie)", ["VELO_IN", "VELO_OUT", "FUSS_IN", "FUSS_OUT"])
-    compare_var = st.selectbox("Vergleichsvariable (Wetter)",
-                               ["temp", "humidity", "wind_speed", "clouds_all", "feels_like", "visibility"])
 
     # Zeitintervall wählen
     interval = st.selectbox("Intervall", ["H4", "D", "W"], index=0)
@@ -119,3 +125,4 @@ def show(mobility_df, df):
         title=f"{target_var} – {interval}-Chart"
     )
     st.plotly_chart(fig, use_container_width=True)
+
