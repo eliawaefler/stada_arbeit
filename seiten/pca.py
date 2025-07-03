@@ -64,4 +64,44 @@ def show(df):
 
     # -------------------
     st.subheader("📈 Erklärte Varianz")
-    for i, var in enumerate(explained
+    for i, var in enumerate(explained_var):
+        st.write(f"{pc_names[i]}: {var:.2%}")
+
+    # -------------------
+    st.subheader("📐 Einflussrichtungen (Loadings) auf PC1 & PC2")
+    st.write("""
+    Die Richtung und Länge der Pfeile zeigen, wie stark ein ursprüngliches Merkmal  
+    zu PC1 und PC2 beiträgt. Je länger ein Pfeil, desto mehr Varianz dieses Merkmals  
+    wird durch diese Hauptkomponenten erklärt.
+    """)
+
+    fig, ax = plt.subplots(figsize=(6, 6))
+    for i, feature in enumerate(selected):
+        ax.arrow(0, 0,
+                 pca.components_[0, i],
+                 pca.components_[1, i],
+                 head_width=0.05, head_length=0.05, fc='blue', ec='blue')
+        ax.text(pca.components_[0, i]*1.1,
+                pca.components_[1, i]*1.1,
+                feature,
+                color='black', ha='center', va='center')
+
+    ax.set_xlabel("PC1")
+    ax.set_ylabel("PC2")
+    ax.set_title("PCA – Einfluss der Merkmale auf die ersten zwei PCs")
+    ax.grid(True)
+    ax.axhline(0, color='grey', lw=1)
+    ax.axvline(0, color='grey', lw=1)
+    ax.set_xlim(-1, 1)
+    ax.set_ylim(-1, 1)
+    st.pyplot(fig)
+
+    st.write("""
+    **Wie liest man die Pfeilgrafik?**
+
+    - 🔵 Pfeile mit ähnlicher Richtung → Variablen sind stark **positiv korreliert**  
+    - 🔴 Pfeile in entgegengesetzte Richtung → **negativ korreliert**
+    - ⚪ Pfeile senkrecht zueinander → **unkorreliert**
+    - 🔺 Punkte, die in Pfeilrichtung liegen → **werden stark durch dieses Merkmal beeinflusst**
+    """)
+
