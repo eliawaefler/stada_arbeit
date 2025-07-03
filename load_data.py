@@ -31,7 +31,7 @@ def load_all_data():
         wetter_df = pd.read_csv("data/zurich_wetter.csv")
 
         # Verwende Unix-Zeitstempel für robustes Parsing
-        wetter_df["dt_iso"] = pd.to_datetime(wetter_df["dt"], unit="s").dt.floor("H")
+        wetter_df["dt_iso"] = pd.to_datetime(wetter_df["dt"], unit="s").dt.floor("h")
 
         # Entferne Zeilen mit ungültigen Zeitstempeln
         wetter_df = wetter_df.dropna(subset=["dt_iso"])
