@@ -1,7 +1,7 @@
 # seiten/start.py
 import streamlit as st
 
-def show(mobility_df, wetter_df, standorte_df):
+def show(mobility_df, wetter_df):
     st.title("Statistische Auswertung – Zürich Mobility & Wetter")
 
     st.subheader("https://stadaarbeit.streamlit.app/")
