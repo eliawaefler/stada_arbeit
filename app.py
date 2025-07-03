@@ -29,6 +29,6 @@ elif page == "Multiple Lineare Regression (MLR)":
 elif page == "PCA":
     pca.show(df)
 elif page == "Zeitreihenanalyse":
-    zeitreihe.show(mobility_agg)
+    zeitreihe.show(mobility_agg, df)
 elif page == "Clustering (K-Means)":
     clustering.show(df)
