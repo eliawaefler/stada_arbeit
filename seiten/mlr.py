@@ -131,6 +131,11 @@ def show(df):
     Die Residuen sollten *symmetrisch* um 0 verteilt sein.  
     Wenn die Verteilung der Residuen der Glockenkurve ähnelt,  
     ist die Normalverteilungsannahme für die Fehler erfüllt.
+    
+    für die meisten Modelle in dieser Arbeit sind die Residuen:
+    - ungefähr normalverteilt
+    - rechte Schiefe (langer rechter „Schwanz“) bedeutet grössere positive Fehler. 
+        (z.B. Feste wie das Zürichfest oder Neujahr verziehen hier stark, weil dann deutlich mehr Menschen aktiv sind als sonst.)
     """)
 
     # -------------------
@@ -139,3 +144,16 @@ def show(df):
     stats.probplot(residuen, dist="norm", plot=ax2)
     ax2.set_title("Q-Q-Plot")
     st.pyplot(fig2)
+    st.write("""
+    **interpretation**
+    Gerade Linie (45°) → Die Residuen sind normalverteilt.
+    S-förmig → Links- oder rechtsschiefe Verteilung:
+    Unten über der Linie, oben darunter → linksschief.
+    Unten unter der Linie, oben darüber → rechtsschief.
+    Starke Ausreißer → Punkte weit entfernt von der Linie (besonders an den Enden).
+    Gebogener Verlauf in der Mitte → falsche Kurtosis (z. B. zu flach oder spitz).
+    
+    in dieser Arbeit:
+    die meisten Mdelle werden leptokurtisch (Punkte in der Mitte liegen unter der Diagonalen, an den Enden über der Diagonalen.)
+    d.h. Zu viele Ausreisser, Daten haben dicke Tails.
+    → Modell ist sensibel für Extremwerte, und erklärt nicht alles. (Festtage usw. sind nicht abgebildet.""")
